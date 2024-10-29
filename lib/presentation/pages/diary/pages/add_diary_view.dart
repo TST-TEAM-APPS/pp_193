@@ -64,12 +64,14 @@ class _AddDiaryViewState extends State<AddDiaryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 23),
+          color: Theme.of(context).colorScheme.background,
           child: SafeArea(
             child: Column(
               children: [
@@ -80,10 +82,8 @@ class _AddDiaryViewState extends State<AddDiaryView> {
                     const SizedBox(width: 35),
                     Text(
                       'New diary',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary),
                     ),
                     const Spacer(),
                     CupertinoButton(
@@ -91,7 +91,8 @@ class _AddDiaryViewState extends State<AddDiaryView> {
                       minSize: 10,
                       onPressed: buttonState ? _save : null,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 4),
                         decoration: BoxDecoration(
                           color: Theme.of(context)
                               .colorScheme
@@ -104,7 +105,9 @@ class _AddDiaryViewState extends State<AddDiaryView> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!
-                              .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
                         ),
                       ),
                     ),
@@ -125,17 +128,19 @@ class _AddDiaryViewState extends State<AddDiaryView> {
                 ),
                 const Spacer(),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).extension<CustomColors>()!.surface3!.withOpacity(0.08),
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .surface3!
+                        .withOpacity(0.08),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     DateHelper.formatDate(DateTime.now()),
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary),
                   ),
                 ),
                 const SizedBox(height: 30),

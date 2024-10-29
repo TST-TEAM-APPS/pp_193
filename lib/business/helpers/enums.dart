@@ -28,12 +28,7 @@ enum Gender {
   female,
 }
 
-enum Meal {
-  breakfast,
-  lunch,
-  dinner,
-  snack
-}
+enum Meal { breakfast, lunch, dinner, snack }
 
 @HiveType(typeId: 90)
 enum Segment {
@@ -49,4 +44,15 @@ enum Segment {
   final String label;
 
   const Segment(this.label);
+}
+
+enum SortType {
+  desTime('In descending of time'),
+  ascTime('In ascending of time'),
+  desMood('In descending of mood'),
+  ascMood('In ascending of mood');
+
+  final String label;
+
+  const SortType(this.label);
 }

@@ -142,7 +142,7 @@ class DefaultThemeGetter {
         secondary: Color(0xFF2274F1),
         surface: surface,
         onSurface: Color(0xFF313131),
-        background: Color(0xFF111111),
+        background: Color(0xFF171334),
         secondaryContainer: Color(0xFF34C85A),
         onBackground: onBackground,
         error: Colors.white,

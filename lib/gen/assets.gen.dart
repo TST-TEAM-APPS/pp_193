@@ -15,6 +15,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/icon.png
   AssetGenImage get icon => const AssetGenImage('assets/images/icon.png');
 
+  /// File path: assets/images/med_bg.png
+  AssetGenImage get medBg => const AssetGenImage('assets/images/med_bg.png');
+
   /// File path: assets/images/meditation_person.png
   AssetGenImage get meditationPerson =>
       const AssetGenImage('assets/images/meditation_person.png');
@@ -47,6 +50,7 @@ class $AssetsImagesGen {
   /// List of all assets
   List<AssetGenImage> get values => [
         icon,
+        medBg,
         meditationPerson,
         onb1,
         onb2,
@@ -98,6 +102,12 @@ class $AssetsVectorsGen {
   /// File path: assets/vectors/play.svg
   String get play => 'assets/vectors/play.svg';
 
+  /// File path: assets/vectors/sort.svg
+  String get sort => 'assets/vectors/sort.svg';
+
+  /// File path: assets/vectors/start_med.svg
+  String get startMed => 'assets/vectors/start_med.svg';
+
   /// List of all assets
   List<String> get values => [
         arrowLeft,
@@ -111,7 +121,9 @@ class $AssetsVectorsGen {
         meditation,
         notePlus,
         pause,
-        play
+        play,
+        sort,
+        startMed
       ];
 }
 
@@ -123,11 +135,16 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName, {this.size = null});
+  const AssetGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  });
 
   final String _assetName;
 
   final Size? size;
+  final Set<String> flavors;
 
   Image image({
     Key? key,
@@ -147,7 +164,7 @@ class AssetGenImage {
     ImageRepeat repeat = ImageRepeat.noRepeat,
     Rect? centerSlice,
     bool matchTextDirection = false,
-    bool gaplessPlayback = false,
+    bool gaplessPlayback = true,
     bool isAntiAlias = false,
     String? package,
     FilterQuality filterQuality = FilterQuality.low,

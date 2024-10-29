@@ -12,12 +12,14 @@ class ConfigService {
   late final String _target;
 
   Future<ConfigService> init() async {
+
     _flagsmithClient = await FlagsmithClient.init(
       apiKey: _apikey,
       config: const FlagsmithConfig(
         caches: true,
       ),
     );
+    
     await _flagsmithClient.getFeatureFlags(reload: true);
 
     final config = jsonDecode(

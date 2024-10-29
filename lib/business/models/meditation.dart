@@ -12,6 +12,10 @@ class Meditation extends Equatable {
         duration: entity.duration,
       );
 
+  int compareTo(Meditation other) {
+    return mood.compareTo(other.mood);
+  }
+
   @override
   List<Object?> get props => [mood, duration];
 }

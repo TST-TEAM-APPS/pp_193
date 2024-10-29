@@ -52,7 +52,7 @@ class SettingsView extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
+              color: Theme.of(context).colorScheme.background,
               borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(34),
                 topLeft: Radius.circular(34),
@@ -101,6 +101,7 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 16),
         child: SafeArea(

@@ -147,6 +147,7 @@ class _MeditationViewState extends State<MeditationView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
         color: Theme.of(context).colorScheme.background,
         padding: EdgeInsets.symmetric(horizontal: _page == 0 ? 16 : 0),

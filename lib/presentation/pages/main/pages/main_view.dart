@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pp193/business/helpers/arguments.dart';
 import 'package:pp193/business/helpers/date_helper.dart';
+import 'package:pp193/business/helpers/enums.dart';
 import 'package:pp193/business/models/diary.dart';
 import 'package:pp193/business/models/meditation.dart';
 import 'package:pp193/business/services/navigation/route_names.dart';
@@ -11,6 +12,7 @@ import 'package:pp193/gen/assets.gen.dart';
 import 'package:pp193/presentation/pages/main/controllers/main_controller.dart';
 import 'package:pp193/presentation/themes/custom_colors.dart';
 import 'package:pp193/presentation/widgets/page_view_wrapper.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -69,8 +71,15 @@ class _MainViewState extends State<MainView> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
           padding: const EdgeInsets.symmetric(vertical: 23, horizontal: 16),
-          color: Theme.of(context).colorScheme.background,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: Assets.images.medBg.provider(),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,60 +94,71 @@ class _MainViewState extends State<MainView> {
                         .bodyLarge!
                         .copyWith(color: Theme.of(context).colorScheme.primary),
                   ),
-                  onPressed: () => Navigator.of(context).pushNamed(RouteNames.settings),
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed(RouteNames.settings),
                 ),
                 const SizedBox(height: 11),
-                Container(
-                  height: 132,
-                  width: MediaQuery.of(context).size.width - 32,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: DecorationImage(
-                          image: Assets.images.meditationPerson.image().image, fit: BoxFit.cover)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Start your\nmeditation\ntoday',
-                        style: Theme.of(context)
-                            .textTheme
-                            .displaySmall!
-                            .copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                      ),
-                      const Spacer(),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: CupertinoButton(
-                          padding: EdgeInsets.zero,
-                          minSize: 10,
-                          onPressed: () => Navigator.of(context).pushNamed(RouteNames.meditation,
-                              arguments: MeditationViewArgs(isFirstJoin: false)),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Theme.of(context).colorScheme.primary),
-                            child: Text(
-                              'Start meditation',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Start your\nmeditation today',
+                      style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    ),
+                    const Spacer(),
+                    Image.asset(
+                      Assets.images.meditationPerson.path,
+                      fit: BoxFit.contain,
+                      height: 110,
+                      // width: 150,
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 18),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    minSize: 10,
+                    onPressed: () => Navigator.of(context).pushNamed(
+                        RouteNames.meditation,
+                        arguments: MeditationViewArgs(isFirstJoin: false)),
+                    child: Container(
+                      width: double.infinity,
+                      height: 56,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Theme.of(context).colorScheme.primary),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(Assets.vectors.startMed),
+                          const SizedBox(width: 10),
+                          Text(
+                            'Start meditation',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
                 Container(
-                  height: 28,
+                  height: 36,
                   padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(7),
-                    color: Theme.of(context).colorScheme.onBackground,
+                    color: Colors.white.withOpacity(0.08),
                   ),
                   child: Row(
                     children: [
@@ -151,10 +171,7 @@ class _MainViewState extends State<MainView> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(7),
                               color: _tab == 0
-                                  ? Theme.of(context)
-                                      .extension<CustomColors>()!
-                                      .surface3!
-                                      .withOpacity(0.08)
+                                  ? Theme.of(context).colorScheme.primary
                                   : Colors.transparent,
                             ),
                             child: Center(
@@ -165,7 +182,9 @@ class _MainViewState extends State<MainView> {
                                   SvgPicture.asset(
                                     Assets.vectors.meditation,
                                     color: _tab == 0
-                                        ? Theme.of(context).colorScheme.primary
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary
                                         : Theme.of(context)
                                             .extension<CustomColors>()!
                                             .surface3!
@@ -174,9 +193,14 @@ class _MainViewState extends State<MainView> {
                                   const SizedBox(width: 4),
                                   Text(
                                     'Meditation',
-                                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge!
+                                        .copyWith(
                                           color: _tab == 0
-                                              ? Theme.of(context).colorScheme.primary
+                                              ? Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary
                                               : Theme.of(context)
                                                   .extension<CustomColors>()!
                                                   .surface3!
@@ -198,10 +222,7 @@ class _MainViewState extends State<MainView> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(7),
                               color: _tab == 1
-                                  ? Theme.of(context)
-                                      .extension<CustomColors>()!
-                                      .surface3!
-                                      .withOpacity(0.08)
+                                  ? Theme.of(context).colorScheme.primary
                                   : Colors.transparent,
                             ),
                             child: Center(
@@ -212,7 +233,9 @@ class _MainViewState extends State<MainView> {
                                   SvgPicture.asset(
                                     Assets.vectors.diary,
                                     color: _tab == 1
-                                        ? Theme.of(context).colorScheme.primary
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary
                                         : Theme.of(context)
                                             .extension<CustomColors>()!
                                             .surface3!
@@ -221,9 +244,14 @@ class _MainViewState extends State<MainView> {
                                   const SizedBox(width: 4),
                                   Text(
                                     'My diary',
-                                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge!
+                                        .copyWith(
                                           color: _tab == 1
-                                              ? Theme.of(context).colorScheme.primary
+                                              ? Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary
                                               : Theme.of(context)
                                                   .extension<CustomColors>()!
                                                   .surface3!
@@ -262,22 +290,165 @@ class _MainViewState extends State<MainView> {
   }
 }
 
-class MeditationList extends StatelessWidget {
-  const MeditationList({super.key, required this.meditations});
+class MeditationList extends StatefulWidget {
+  MeditationList({super.key, required this.meditations});
 
   final List<Meditation> meditations;
 
   @override
+  State<MeditationList> createState() => _MeditationListState();
+}
+
+class _MeditationListState extends State<MeditationList> {
+  SortType sort = SortType.desTime;
+
+  void setSort(SortType type) => setState(() {
+        sort = type;
+      });
+
+  List<Meditation> filterItems() {
+    var tempList = widget.meditations.toList();
+    switch (sort) {
+      case SortType.desTime:
+        tempList.sort((a, b) => b.duration.compareTo(a.duration));
+        tempList = tempList.reversed.toList();
+      case SortType.ascTime:
+        tempList.sort((a, b) => b.duration.compareTo(a.duration));
+      case SortType.desMood:
+        tempList.sort((a, b) => a.mood.compareTo(b.mood));
+        tempList = tempList.reversed.toList();
+      case SortType.ascMood:
+        tempList.sort((a, b) => a.mood.compareTo(b.mood));
+    }
+    return tempList;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return meditations.isNotEmpty
+    final meditations = filterItems();
+    return widget.meditations.isNotEmpty
         ? Column(
-            children: List.generate(
-                meditations.length, (index) => MeditationContainer(meditation: meditations[index])),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              PullDownButton(
+                itemBuilder: (context) => [
+                  ...List.generate(
+                    SortType.values.length,
+                    (int index) => PullDownMenuItem(
+                      title: SortType.values[index].label,
+                      onTap: () => setSort(SortType.values[index]),
+                    ),
+                  )
+                ],
+                buttonBuilder: (context, showMenu) => CupertinoButton(
+                  onPressed: showMenu,
+                  padding: EdgeInsets.zero,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onPrimary
+                          .withOpacity(0.08),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset(Assets.vectors.sort),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Sort',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              ...List.generate(
+                  meditations.length,
+                  (index) => MeditationContainer(
+                      meditation: meditations[index])),
+            ],
           )
-        : Text(
-            'Your don’t have any meditation sessions, to start meditating, tap on the “Start meditation” button.',
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: Theme.of(context).extension<CustomColors>()!.surface3!.withOpacity(0.4)),
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              PullDownButton(
+                itemBuilder: (context) => [
+                  PullDownMenuItem(
+                    title: 'In descending of time',
+                    onTap: () {},
+                  ),
+                  const PullDownMenuDivider(),
+                  PullDownMenuItem(
+                    title: 'In ascending of time',
+                    onTap: () {},
+                  ),
+                  const PullDownMenuDivider(),
+                  PullDownMenuItem(
+                    title: 'In descending of mood',
+                    onTap: () {},
+                  ),
+                  const PullDownMenuDivider(),
+                  PullDownMenuItem(
+                    title: 'In ascending of mood',
+                    onTap: () {},
+                  ),
+                ],
+                buttonBuilder: (context, showMenu) => CupertinoButton(
+                  onPressed: showMenu,
+                  padding: EdgeInsets.zero,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onPrimary
+                          .withOpacity(0.08),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset(Assets.vectors.sort),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Sort',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Your don’t have any meditation sessions, to start meditating, tap on the “Start meditation” button.',
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .surface3!
+                        .withOpacity(0.4)),
+                textAlign: TextAlign.center,
+              ),
+            ],
           );
   }
 }
@@ -294,7 +465,10 @@ class MeditationContainer extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Theme.of(context).extension<CustomColors>()!.surface3!.withOpacity(0.08),
+        color: Theme.of(context)
+            .extension<CustomColors>()!
+            .surface3!
+            .withOpacity(0.08),
       ),
       child: Row(
         children: [
@@ -310,7 +484,10 @@ class MeditationContainer extends StatelessWidget {
           Text(
             'Your mood after\nmeditation',
             style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                color: Theme.of(context).extension<CustomColors>()!.surface3!.withOpacity(0.4)),
+                color: Theme.of(context)
+                    .extension<CustomColors>()!
+                    .surface3!
+                    .withOpacity(0.4)),
           ),
           const Spacer(),
           Column(
@@ -319,7 +496,10 @@ class MeditationContainer extends StatelessWidget {
               Text(
                 'Time meditation',
                 style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                    color: Theme.of(context).extension<CustomColors>()!.surface3!.withOpacity(0.4)),
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .surface3!
+                        .withOpacity(0.4)),
               ),
               Text(
                 '${meditation.duration.inMinutes < 10 ? '0${meditation.duration.inMinutes}' : meditation.duration.inMinutes}:${(meditation.duration.inSeconds % 60) < 10 ? '0${meditation.duration.inSeconds % 60}' : meditation.duration.inSeconds % 60}',
@@ -353,10 +533,12 @@ class DiaryList extends StatelessWidget {
               padding: EdgeInsets.zero,
               minSize: 10,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.14),
+                  color:
+                      Theme.of(context).colorScheme.primary.withOpacity(0.14),
                 ),
                 child: Center(
                   child: Row(
@@ -366,16 +548,15 @@ class DiaryList extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         'New diary',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(color: Theme.of(context).colorScheme.primary),
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Theme.of(context).colorScheme.primary),
                       )
                     ],
                   ),
                 ),
               ),
-              onPressed: () => Navigator.of(context).pushNamed(RouteNames.addDiary,
+              onPressed: () => Navigator.of(context).pushNamed(
+                  RouteNames.addDiary,
                   arguments: AddDiaryViewArgs(controller: controller)),
             ),
             const SizedBox(height: 16),
@@ -429,13 +610,19 @@ class DiaryContainer extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
             decoration: BoxDecoration(
-              color: Theme.of(context).extension<CustomColors>()!.surface3!.withOpacity(0.08),
+              color: Theme.of(context)
+                  .extension<CustomColors>()!
+                  .surface3!
+                  .withOpacity(0.08),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
               diary.note,
               style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                  color: Theme.of(context).extension<CustomColors>()!.surface3!.withOpacity(0.4)),
+                  color: Theme.of(context)
+                      .extension<CustomColors>()!
+                      .surface3!
+                      .withOpacity(0.4)),
             ),
           ),
           const SizedBox(height: 8),
@@ -446,7 +633,10 @@ class DiaryContainer extends StatelessWidget {
               Text(
                 DateHelper.formatDate(diary.date),
                 style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                    color: Theme.of(context).extension<CustomColors>()!.surface3!.withOpacity(0.4)),
+                    color: Theme.of(context)
+                        .extension<CustomColors>()!
+                        .surface3!
+                        .withOpacity(0.4)),
               )
             ],
           )
